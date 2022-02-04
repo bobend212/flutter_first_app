@@ -28,10 +28,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    var _questions = [
-      'What is your name?',
-      'How old are you?',
-      'Where are you from?'
+    var questions = [
+      {'questionText': 'What is your name?', 'answers': ['Joe', 'Bob', 'Frank', 'Nobody', 'Joel']},
+      {'questionText': 'How old are you?', 'answers': ['0-10', '11-20', '21-30', '> 31']},
+      {'questionText': 'Where are you from?', 'answers': ['Poland', 'United States', 'Pandora', 'Thushima']}
     ];
 
     return MaterialApp(
@@ -40,10 +40,10 @@ class _MyAppState extends State<MyApp> {
           title: Text('quizz app'),
         ),
         body: Column(children: [
-          Question(_questions[_questionIndex]),
-          Answer(_answerQuestion),
-          Answer(_answerQuestion),
-          Answer(_answerQuestion),
+          Question(questions[_questionIndex]['questionText'] as String),
+          ...(questions[_questionIndex]['answers'] as List<String>).map((answer) {
+            return Answer(_answerQuestion, answer);
+          }).toList()
         ]),
       ),
     );
