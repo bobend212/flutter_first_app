@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-import './question.dart';
-import './answer.dart';
+import './quiz.dart';
+import './result.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,6 +16,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final _questions = const [
+    {
+      'questionText': 'What is your name?',
+      'answers': ['Joe', 'Bob', 'Frank', 'Nobody', 'Joel']
+    },
+    {
+      'questionText': 'How old are you?',
+      'answers': ['0-10', '11-20', '21-30', '> 31']
+    },
+    {
+      'questionText': 'Where are you from?',
+      'answers': ['Poland', 'United States', 'Pandora', 'Thushima']
+    }
+  ];
+
   var _questionIndex = 0;
 
   void _answerQuestion() {
@@ -23,28 +38,21 @@ class _MyAppState extends State<MyApp> {
       _questionIndex = _questionIndex + 1;
     });
 
-    print(_questionIndex);
+    if (_questionIndex < _questions.length) {
+      print('we have more quests');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      {'questionText': 'What is your name?', 'answers': ['Joe', 'Bob', 'Frank', 'Nobody', 'Joel']},
-      {'questionText': 'How old are you?', 'answers': ['0-10', '11-20', '21-30', '> 31']},
-      {'questionText': 'Where are you from?', 'answers': ['Poland', 'United States', 'Pandora', 'Thushima']}
-    ];
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('quizz app'),
         ),
-        body: Column(children: [
-          Question(questions[_questionIndex]['questionText'] as String),
-          ...(questions[_questionIndex]['answers'] as List<String>).map((answer) {
-            return Answer(_answerQuestion, answer);
-          }).toList()
-        ]),
+        body: _questionIndex < _questions.length
+            ? Quiz(answerQuestion: _answerQuestion, questions: _questions, questionIndex: _questionIndex,)
+            : Result(),
       ),
     );
   }
